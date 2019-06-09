@@ -1,0 +1,25 @@
+{
+  "name": "web-express",
+  "version": "1.0.0",
+  "description": " a web scraping project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node av.js > content.html"
+  },
+  "author": "Ethan Zhao",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "cheerio": "^1.0.0-rc.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.4",
+    "lodash": "^4.17.11",
+    "mongodb": "^3.2.5",
+    "opn": "^6.0.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "yarn": "^1.15.2"
+  }
+}
