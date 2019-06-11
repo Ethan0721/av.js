@@ -1,31 +1,32 @@
-const config = require('./config.js');
+// const config = require('./config.js');
 const MongoClient = require('mongodb').MongoClient;
 let mongodb = null;
 
 
 
-const uri = config.mongoUrl;
-const client = new MongoClient(uri);
-console.log('connecting to mongodb ' + uri);
-client.connect(function(err) {
-  const collection = client.db("TEST");
-  console.log(collection);
-  // perform actions on the collection object
-  client.close();
+// const uri = config.mongoUrl;
+// const client = new MongoClient(uri);
+// console.log('connecting to mongodb ' + uri);
+// client.connect(function(err) {
+//   const collection = client.db("TEST");
+//   console.log(collection);
+//   // perform actions on the collection object
+//   client.close();
+// });
+const url = "mongodb://localhost:27017/cigs"
+MongoClient.connect(url,{
+    poolSize:10,
+    useNewUrlParser: true ,
+},function(err, db){
+    if(err){
+        console.log('ERROR connecting to MongoDB');
+        return;
+    }
+    console.log(" Connecting Successfully");
+    mongodb = db;
+    // client.close();
 });
 
-// MongoClient.connect(uri,{
-//     poolSize:10
-// },function(err, db){
-//     if(err){
-//         console.log('ERROR connecting to MongoDB');
-//         return;
-//     }
-//     console.log(" Connecting Successfully");
-//     mongodb = db;
-//     client.close();
-// })
-
-// module.exports.getCollection = function (collection){
-//     return mongodb.collection(collection);
-// }
+module.exports.getCollection = function (collection){
+    return mongodb.collection(collection);
+}
