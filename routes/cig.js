@@ -18,7 +18,7 @@ router.get('/users', async function (req, res, next){
         await mongoClient.getCollection('users')
         .find(query,{projection:{ _id: 0 }})
         .toArray(function(err, docs){
-            res.json( Object.assign(constant.SUCCESS, {data: docs}));
+            res.json( {...constant.SUCCESS, data: docs} );
         }); 
     } catch(err) {
         res.json(constant.ERROR);
@@ -34,9 +34,8 @@ router.get('/users/:wechatId', async function (req, res, next){
     }
     try {
         const template = await mongoClient.getCollection('users')
-        .find( query, { projection:{ _id: 0 }} )
-        .toArray(); 
-        res.json( Object.assign(constant.SUCCESS, {data : template}));
+        .findOne( query, { projection:{ _id: 0 }} )
+        res.json( { ...constant.SUCCESS, data : template});
     } catch(err) {
         print(err);
         res.send(constant.ERROR);
@@ -54,16 +53,16 @@ router.post('/users/add', function (req, res, next){
     mongoClient.getCollection('users').findOne(query).then(function(doc){
         console.log("doc is ", doc);
         if(doc){
-            res.json(Object.assign(constant.ERROR, {responseInfo: "User already exist"}));
+            res.json({...constant.ERROR, responseInfo: "User already exist"});
             return;
         }else{
             if(!body.createdDate){
                 const createdDate = new Date().getTime();
-                console.log(createdDate)
+                // console.log(createdDate)
                 body.createdDate = createdDate;
             }
             mongoClient.getCollection('users').insertOne(body).then(function(err){
-                res.json(Object.assign(constant.SUCCESS, {responseInfo : "User added successfully"}));
+                res.json({...constant.SUCCESS, responseInfo : "User added successfully"});
             })   
         }
     })
@@ -82,7 +81,7 @@ router.post('/users/order', async function (req, res, next){
             { wechatId: wechatId },
             { $push: { orderHistory: order } }
         ).then(function(){
-            res.json(Object.assign(constant.SUCCESS, {responseInfo : "User order added successfully"}));
+            res.json({...constant.SUCCESS, responseInfo : "User order added successfully"});
         })
     }catch(e){
         print(e);
