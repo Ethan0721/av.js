@@ -1,19 +1,9 @@
+console.log(__filename);
 // const config = require('./config.js');
 const MongoClient = require('mongodb').MongoClient;
-let mongodb = null;
+var mongodb;
 
-
-
-// const uri = config.mongoUrl;
-// const client = new MongoClient(uri);
-// console.log('connecting to mongodb ' + uri);
-// client.connect(function(err) {
-//   const collection = client.db("TEST");
-//   console.log(collection);
-//   // perform actions on the collection object
-//   client.close();
-// });
-const url = "mongodb://localhost:27017/cigs"
+const url = "mongodb://localhost:27017/cig"
 MongoClient.connect(url,{
     poolSize:10,
     useNewUrlParser: true ,
@@ -23,8 +13,8 @@ MongoClient.connect(url,{
         return;
     }
     console.log(" Connecting Successfully");
-    mongodb = db;
-    // client.close();
+    mongodb = db.db("cig");
+    // db.close();
 });
 
 module.exports.getCollection = function (collection){

@@ -7,7 +7,7 @@ var _ = require('lodash');
 
 //defining various routes to handle API calls
 // const rtsMovies = require('./routes/movies');
-const rtsCigs = require('./routes/cigs');
+const rtsCigs = require('./routes/cig');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // configuring the routes 
 // app.use('/web/movies', rtsMovies);
-app.use('/cigs', rtsCigs);
+app.use('/cig', rtsCigs);
 
 app.use(function(req,res,next){
     let err = new Error('Not Found - request' + req.params);
