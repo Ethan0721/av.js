@@ -4,6 +4,7 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 var _ = require('lodash');
+var cors = require('cors')
 
 //defining various routes to handle API calls
 // const rtsMovies = require('./routes/movies');
@@ -12,6 +13,7 @@ const rtsCigs = require('./routes/cig');
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
+app.use(cors())
 app.use(bodyParser.json({limit:'50mb'}));
 app.use(bodyParser.urlencoded({
     limit:'50mb',

@@ -4,7 +4,8 @@ const mongoClient = require('../db');
 const constant = require('./../constant');
 const router = express.Router();
 
-// async function getDocument (collectionName, query){
+
+        // async function getDocument (collectionName, query){
 //     let a = await mongoClient.getCollection(collectionName)
 //         .find(query,{projection:{ _id: 0 }})
 //         .toArray();
