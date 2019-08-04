@@ -16,7 +16,6 @@ module.exports = {
     Movies: MOVIESPAGE, 
     SUCCESS: SUCCESS,
     ERROR: ERROR
-
 } 
 
 
