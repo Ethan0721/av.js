@@ -36,20 +36,39 @@ router.get('/users/:wechatId', async function (req, res, next){
         return next();
     }
 })
-router.put('/users/wechatId', async function (req, res, next){
+router.put('/users/update/:wechatId', async function (req, res, next){
     console.info("UPDATE user method");
-    const userId = req.params.wechatId;
-    // let data = req.body;
+    //const userId = req.params.wechatId;
+    const userId = req.body.wechatId;
+    // let data = req.body.data;
+    // let userObject = {
+    //     "name":data.name,
+    //     "address": data.address,
+    //     "createdDate":data.createdDate,
+    //     "university":data.university,
+    //     "friends": data.friends,
+    //     "gender":data
+    // }
     const query = {
         wechatId : userId
     }
     try {
         const template = await mongoClient.getCollection('users')
-        .findOne( query, { projection:{ _id: 0 }} )
+        .findOne( query, { projection:{ _id: 0 }})
+        let updateDateNow = new Date().getTime();
+        if(_.isNil(template.updatedDate)){
+            let updatedDateArray = [];
+            updatedDateArray.push(updateDateNow);
+            template.updatedDate = updatedDateArray;
+        }  else{ 
+            template.updatedDate.unshift(updateDateNow);            
+        }
         // res.json( { ...constant.SUCCESS, data : template});
-        console.log('template : ', template);
+        // console.log('template : ', template);
+        await mongoClient.getCollection('users').replaceOne(query, template);
+        res.json({...constant.SUCCESS, responseInfo : "Update User Info"});
     } catch(err) {
-        print(err);
+        console.error("Error Update User Info");
         res.send(constant.ERROR);
         return next();
     }
@@ -154,9 +173,40 @@ router.put('/usersorder/wechatId', async function (req, res, next){
     //     console.err(e);
     // }
 })
-
-
-
+router.get('/category', async function (req, res, next){
+   console.info("GET cig method");
+//    const cigName = req.params;
+   let query = {}; 
+    try {
+        await mongoClient.getCollection('category')
+        .find(query,{projection:{ _id: 0 }})
+        .toArray(function(err, docs){
+            res.json( {...constant.SUCCESS, data: docs} );
+        }); 
+    } catch(err) {
+        res.json(constant.ERROR);
+        console.log(err);
+        return;
+    }
+});
+router.get('/category/name', async function (req, res, next){
+    console.info("GET cig name method");
+    const cigName = req.params;
+    let query = {
+        "name": cigName
+    }; 
+     try {
+         await mongoClient.getCollection('category')
+         .find(query,{projection:{ _id: 0 }})
+         .toArray(function(err, docs){
+             res.json( {...constant.SUCCESS, data: docs} );
+         }); 
+     } catch(err) {
+         res.json(constant.ERROR);
+         console.log(err);
+         return;
+     }
+ });
 
 
 module.exports = router;

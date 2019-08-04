@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({
     parameterLimit:50000
 }))
 app.use(cookieParser());
+console.log(path.join(__dirname, 'public'))
 app.use(express.static(path.join(__dirname, 'public')));
 
 // configuring the routes 
