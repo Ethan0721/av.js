@@ -4,7 +4,9 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 var _ = require('lodash');
-var cors = require('cors')
+var cors = require('cors');
+const PORT = process.env.PORT || 5000;
+
 
 //defining various routes to handle API calls
 // const rtsMovies = require('./routes/movies');
@@ -38,7 +40,7 @@ app.use(function(err,req,res,next){
     res.json(err.message);
 })
 
-var server = app.listen(3030, function(){
+var server = app.listen(PORT, function(){
     let port = server.address().port;
     console.log("Mongo Db browser is listening ... at", port)
 })
