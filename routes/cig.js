@@ -74,7 +74,7 @@ router.put('/users/update/:wechatId', async function (req, res, next){
     }
 })
 router.post('/users/add', function (req, res, next){
-    console.info("INSERT user ");
+    console.info("POST insert user ");
     const body = req.body;
     const query = {
         wechatId: body.wechatId
@@ -85,11 +85,11 @@ router.post('/users/add', function (req, res, next){
             res.json({...constant.ERROR, responseInfo: "User already exist"});
             return;
         }else{
+            const currentTimeStamp = new Date().getTime();
             if(!body.createdDate){
-                const createdDate = new Date().getTime();
-                // console.log(createdDate)
-                body.createdDate = createdDate;
+                body.createdDate = currentTimeStamp;
             }
+            body.updateDate = [currentTimeStamp];
             mongoClient.getCollection('users').insertOne(body).then(function(err){
                 res.json({...constant.SUCCESS, responseInfo : "User added successfully"});
             })   
