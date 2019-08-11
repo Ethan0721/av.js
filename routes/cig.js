@@ -31,7 +31,7 @@ router.get('/users/:wechatId', async function (req, res, next){
         .findOne( query, { projection:{ _id: 0 }} )
         res.json( { ...constant.SUCCESS, data : template});
     } catch(err) {
-        console.error(err);
+        console.logor(err);
         res.send(constant.ERROR);
         return next();
     }
@@ -68,7 +68,7 @@ router.put('/users/update/:wechatId', async function (req, res, next){
         await mongoClient.getCollection('users').replaceOne(query, template);
         res.json({...constant.SUCCESS, responseInfo : "Update User Info"});
     } catch(err) {
-        console.error("Error Update User Info");
+        console.logor("Error Update User Info");
         res.send(constant.ERROR);
         return next();
     }
@@ -116,7 +116,7 @@ router.get('/usersorder', async function (req, res, next){
         }); 
         
     } catch(err) {
-        console.error(err);
+        console.logor(err);
         res.send(constant.ERROR);
         return next();
     }
@@ -149,29 +149,32 @@ try {
     }); 
     
 } catch(err) {
-    console.error(err);
+    console.logor(err);
     res.send(constant.ERROR);
     return next();
 }
 })
-router.put('/usersorder/wechatId', async function (req, res, next){
+router.put('/usersorder/:wechatId', async function (req, res, next){
     console.info("UPDATE user order");
-    // const wechatId = req.body.wechatId;
-    // const order = req.body.order;
-    // const todayDate = new Date().getTime();
-    // if(!order.hasOwnProperty('orderDate')){
-    //     order.orderDate = todayDate;
-    // }
-    // try{
-    //     mongoClient.getCollection('users').updateOne(
-    //         { wechatId: wechatId },
-    //         { $push: { orderHistory: order } }
-    //     ).then(function(){
-    //         res.json({...constant.SUCCESS, responseInfo : "User order added successfully"});
-    //     })
-    // }catch(e){
-    //     console.err(e);
-    // }
+    
+    const wechatId = req.params.wechatId;
+    const order = req.body.order;
+    const currentDate = new Date().getTime();
+    if(!order.hasOwnProperty('orderDate')){
+        order.orderDate = currentDate;
+    }
+    let temp = await mongoClient.getCollection('users').findOne({ wechatId: wechatId });
+    console.log(temp);
+    try{
+        mongoClient.getCollection('users').updateOne(
+            { wechatId: wechatId },
+            { $push: { orderHistory: order } }
+        ).then(function(){
+            res.json({...constant.SUCCESS, responseInfo : "User order added successfully"});
+        })
+    }catch(e){
+        console.log(e);
+    }
 })
 router.get('/category', async function (req, res, next){
    console.info("GET cig method");

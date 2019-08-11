@@ -20,5 +20,6 @@ MongoClient.connect(uri,{
 });
 
 module.exports.getCollection = function (collection){
+    console.log("get collection:", collection);
     return mongodb.collection(collection);
 }

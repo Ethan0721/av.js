@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "/Users/jian/Programming/proj/app.js"
+            "program": "/Users/jian/proj/app.js"
         }
     ]
 }
