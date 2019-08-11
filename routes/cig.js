@@ -154,27 +154,39 @@ try {
     return next();
 }
 })
-router.put('/usersorder/:wechatId', async function (req, res, next){
-    console.info("UPDATE user order");
+router.post('/usersorder/:wechatId', async function (req, res, next){
+    console.info("INERT user order");
     
     const wechatId = req.params.wechatId;
+    const query = {
+        wechatId: req.params.wechatId
+    }
     const order = req.body.order;
     const currentDate = new Date().getTime();
     if(!order.hasOwnProperty('orderDate')){
         order.orderDate = currentDate;
     }
-    let temp = await mongoClient.getCollection('users').findOne({ wechatId: wechatId });
+    mongoClient.getCollection('users').findOne({ wechatId: wechatId })
+    .then(function(temp){
+        if(temp){
+            temp.orderHistory ? temp.orderHistory.push(order) : temp.orderHistory = [order];
+            await mongoClient.getCollection('users').replaceOne(query, temp);
+            res.json({...constant.SUCCESS, responseInfo : "Insert order successfully"});
+        }else{
+            res.status(400).send({...constant.ERROR, responseInfo: "Not able to find the user"});
+        }
+    });
     console.log(temp);
-    try{
-        mongoClient.getCollection('users').updateOne(
-            { wechatId: wechatId },
-            { $push: { orderHistory: order } }
-        ).then(function(){
-            res.json({...constant.SUCCESS, responseInfo : "User order added successfully"});
-        })
-    }catch(e){
-        console.log(e);
-    }
+    // try{
+    //     mongoClient.getCollection('users').updateOne(
+    //         { wechatId: wechatId },
+    //         { $push: { orderHistory: order } }
+    //     ).then(function(){
+    //         res.json({...constant.SUCCESS, responseInfo : "User order added successfully"});
+    //     })
+    // }catch(e){
+    //     console.log(e);
+    // }
 })
 router.get('/category', async function (req, res, next){
    console.info("GET cig method");

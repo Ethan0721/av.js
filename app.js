@@ -6,10 +6,12 @@ const bodyParser = require('body-parser')
 var _ = require('lodash');
 var cors = require('cors');
 const PORT = process.env.PORT || 5000;
-
-
+// const argument = process.argv;
+// const ENV = argument[2];
 //defining various routes to handle API calls
 // const rtsMovies = require('./routes/movies');
+console.log("EV in app:",ENV);
+
 const rtsCigs = require('./routes/cig');
 
 app.set('view engine', 'pug');
@@ -45,4 +47,7 @@ var server = app.listen(PORT, function(){
     console.log("Mongo Db browser is listening ... at", port)
 })
 
-module.exports = app;
+module.exports = {
+    app : app,
+    env: ENV
+}
