@@ -82,7 +82,7 @@ router.post('/users/add', function (req, res, next){
     mongoClient.getCollection('users').findOne(query).then(function(doc){
         console.log("doc is ", doc);
         if(doc){
-            res.json({...constant.ERROR, responseInfo: "User already exist"});
+            res.status(400).json({...constant.ERROR, responseInfo: "User already exist"});
             return;
         }else{
             if(!body.createdDate){
