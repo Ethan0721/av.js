@@ -167,7 +167,7 @@ router.post('/usersorder/:wechatId', async function (req, res, next){
         order.orderDate = currentDate;
     }
     mongoClient.getCollection('users').findOne({ wechatId: wechatId })
-    .then(function(temp){
+    .then(async function(temp){
         if(temp){
             temp.orderHistory ? temp.orderHistory.push(order) : temp.orderHistory = [order];
             await mongoClient.getCollection('users').replaceOne(query, temp);
